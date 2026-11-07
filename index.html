@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>РемонтЛаб — отделка загородных домов</title>
+  <meta name="description" content="РемонтЛаб — отделка загородных домов. Планирование работ, интерьеры и учебный расчёт стоимости работ.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <!-- Обёртка «шапка + первый экран»: на ней держится текстурная поверхность,
+         поэтому новый раздел её не растягивает. -->
+    <div class="stage">
+      <header class="site-header">
+        <p class="logo">РемонтЛаб</p>
+        <a class="header-link" href="#calculator">К расчёту</a>
+      </header>
+
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-text">
+          <p class="eyebrow">Отделка загородных домов</p>
+
+          <h1 class="hero-title" id="hero-title">
+            <span class="line">Загородная жизнь</span>
+            <span class="line">начинается</span>
+            <span class="line">с&nbsp;пространства,</span>
+            <span class="line">в&nbsp;котором хорошо.</span>
+          </h1>
+
+          <p class="lead">
+            Найдите характер своего интерьера и начните планирование
+            отделки с понятного расчёта работ.
+          </p>
+
+          <div class="actions">
+            <a class="btn btn-primary" href="#calculator">
+              Рассчитать стоимость работ
+            </a>
+            <a class="btn btn-secondary" href="#interiors">
+              Посмотреть интерьеры
+            </a>
+          </div>
+        </div>
+
+        <figure class="hero-media">
+          <img
+            src="assets/first.jpg"
+            width="1856"
+            height="2304"
+            alt="Гостиная загородного дома с синим креслом, деревянным столом и открытым окном в сад">
+          <figcaption>
+            Не только для красивых фотографий.<br>
+            Для ваших обычных дней.
+          </figcaption>
+        </figure>
+      </section>
+    </div>
+
+    <section id="interiors" class="interiors" aria-labelledby="interiors-title">
+      <h2 class="interiors-title" id="interiors-title">У каждого дома — свой характер.</h2>
+      <p class="interiors-intro">Эти интерьеры помогут понять, что ближе вам.</p>
+
+      <div class="interiors-grid">
+        <figure class="interior interior--kitchen">
+          <img
+            src="assets/kitchen.jpg"
+            width="2528"
+            height="1696"
+            loading="lazy"
+            alt="Кухня-столовая загородного дома: деревянный обеденный стол со стульями, светлые стены и окно в сад">
+          <figcaption>
+            <span class="interior-label">Кухня и столовая</span>
+            <h3 class="interior-title">Можно не торопиться.</h3>
+            <p class="interior-text">Завтракать, разговаривать, строить планы на день.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="interior interior--bedroom">
+          <img
+            src="assets/bedroom.jpg"
+            width="1856"
+            height="2304"
+            loading="lazy"
+            alt="Спальня загородного дома: белая кровать с синими подушками, деревянный пол и окно в сад">
+          <figcaption>
+            <span class="interior-label">Спальня</span>
+            <h3 class="interior-title">Пусть утро подождёт.</h3>
+            <p class="interior-text">Здесь хорошо просыпаться без будильника.</p>
+          </figcaption>
+        </figure>
+      </div>
+
+      <p class="interiors-note">Концепции интерьеров · AI-визуализации</p>
+    </section>
+
+    <!-- Раздел «Расчёт»: учебный веб-калькулятор по статическому прайсу.
+         Расчётное ядро — js/calculator-core.mjs, цены — js/demo-price.mjs. -->
+    <section id="calculator" class="calculator" aria-labelledby="calculator-title">
+      <div class="calc-sheet">
+        <h2 class="calc-title" id="calculator-title">
+          <span class="calc-title-line">У атмосферы нет ценника.</span>
+          <span class="calc-title-line">У работ — есть расчёт.</span>
+        </h2>
+
+        <p class="calc-intro">
+          Укажите площадь и выберите работы. Посмотрите предварительную
+          стоимость и её состав.
+        </p>
+
+        <p class="calc-warning">
+          Учебный калькулятор. Цены демонстрационные.
+          Рассчитывается только стоимость работ, без материалов.
+        </p>
+
+        <p class="calc-source">Источник цен: «Статический учебный прайс».</p>
+
+        <form class="calc-form" novalidate data-calc-form>
+          <!-- А. Площадь -->
+          <div class="calc-field">
+            <label class="calc-label" for="calc-area">Площадь отделки, м²</label>
+            <input
+              class="calc-input calc-input--area"
+              type="text"
+              id="calc-area"
+              name="area"
+              inputmode="decimal"
+              autocomplete="off"
+              aria-describedby="calc-area-hint calc-area-error">
+            <p class="calc-hint" id="calc-area-hint">
+              Площадь помещений, для которых выполняется расчёт,
+              а не площадь стен.
+              <span class="calc-hint-range">Допустимо от 1 до 500 м², не более двух знаков после запятой.</span>
+            </p>
+            <p class="calc-error" id="calc-area-error" role="alert" hidden></p>
+          </div>
+
+          <!-- Б. Пакеты -->
+          <fieldset class="calc-field calc-group">
+            <legend class="calc-legend">Выберите пакет работ</legend>
+
+            <div class="calc-options">
+              <div class="calc-option" data-entry-id="PKG_COS">
+                <label class="calc-option-head" for="calc-pkg-PKG_COS">
+                  <input
+                    class="calc-radio"
+                    type="radio"
+                    name="calc-package"
+                    id="calc-pkg-PKG_COS"
+                    value="PKG_COS"
+                    aria-describedby="calc-package-hint calc-package-error">
+                  <span class="calc-option-name">Косметический ремонт</span>
+                  <span class="calc-option-price">3&nbsp;500,00 ₽ / м²</span>
+                </label>
+                <p class="calc-option-desc">Обновление отделки без перепланировки и замены инженерных сетей</p>
+              </div>
+
+              <div class="calc-option" data-entry-id="PKG_STD">
+                <label class="calc-option-head" for="calc-pkg-PKG_STD">
+                  <input
+                    class="calc-radio"
+                    type="radio"
+                    name="calc-package"
+                    id="calc-pkg-PKG_STD"
+                    value="PKG_STD"
+                    aria-describedby="calc-package-hint calc-package-error">
+                  <span class="calc-option-name">Стандартный ремонт</span>
+                  <span class="calc-option-price">6&nbsp;500,00 ₽ / м²</span>
+                </label>
+                <p class="calc-option-desc">Подготовка поверхностей и базовая отделка; без перепланировки</p>
+              </div>
+
+              <div class="calc-option" data-entry-id="PKG_CAP">
+                <label class="calc-option-head" for="calc-pkg-PKG_CAP">
+                  <input
+                    class="calc-radio"
+                    type="radio"
+                    name="calc-package"
+                    id="calc-pkg-PKG_CAP"
+                    value="PKG_CAP"
+                    aria-describedby="calc-package-hint calc-package-error">
+                  <span class="calc-option-name">Капитальный ремонт</span>
+                  <span class="calc-option-price">9&nbsp;500,00 ₽ / м²</span>
+                </label>
+                <p class="calc-option-desc">Расширенная подготовка и отделка; без перепланировки</p>
+              </div>
+            </div>
+
+            <p class="calc-hint" id="calc-package-hint">
+              Состав пакетов укрупнён для учебного примера.
+              Подробный перечень работ здесь не определён.
+            </p>
+            <p class="calc-error" id="calc-package-error" role="alert" hidden></p>
+          </fieldset>
+
+          <!-- Пояснение о модели -->
+          <p class="calc-note">
+            В этой демонстрационной модели выбранные дополнительные
+            услуги прибавляются к стоимости пакета. В реальном заказе их
+            включение нужно сверить со сметой.
+          </p>
+
+          <!-- В. Дополнительные работы -->
+          <fieldset class="calc-field calc-group">
+            <legend class="calc-legend">Дополнительные работы</legend>
+
+            <div class="calc-options">
+              <div class="calc-option" data-entry-id="OPT_DEM">
+                <label class="calc-option-head" for="calc-extra-OPT_DEM">
+                  <input
+                    class="calc-check"
+                    type="checkbox"
+                    id="calc-extra-OPT_DEM"
+                    value="OPT_DEM"
+                    data-extra-toggle="OPT_DEM">
+                  <span class="calc-option-name">Демонтаж старого напольного покрытия</span>
+                  <span class="calc-option-price">350,00 ₽ / м²</span>
+                </label>
+                <p class="calc-option-desc">Площадь демонтажа вводится отдельно; не включён в пакеты</p>
+                <div class="calc-qty" data-qty-for="OPT_DEM" hidden>
+                  <label class="calc-sublabel" for="calc-qty-OPT_DEM">Площадь демонтажа, м²</label>
+                  <input
+                    class="calc-input calc-input--qty"
+                    type="text"
+                    id="calc-qty-OPT_DEM"
+                    inputmode="decimal"
+                    autocomplete="off"
+                    data-qty-id="OPT_DEM"
+                    aria-describedby="calc-qty-hint-OPT_DEM">
+                  <p class="calc-hint" id="calc-qty-hint-OPT_DEM">
+                    Допустимо от 0,01 до 500 м² и не больше площади отделки.
+                  </p>
+                </div>
+                <p class="calc-error" id="calc-error-OPT_DEM" role="alert" hidden></p>
+              </div>
+
+              <div class="calc-option" data-entry-id="OPT_SOUND">
+                <label class="calc-option-head" for="calc-extra-OPT_SOUND">
+                  <input
+                    class="calc-check"
+                    type="checkbox"
+                    id="calc-extra-OPT_SOUND"
+                    value="OPT_SOUND"
+                    data-extra-toggle="OPT_SOUND">
+                  <span class="calc-option-name">Дополнительная шумоизоляция стен</span>
+                  <span class="calc-option-price">1&nbsp;200,00 ₽ / м²</span>
+                </label>
+                <p class="calc-option-desc">Площадь обрабатываемых стен вводится отдельно; не включена в пакеты</p>
+                <div class="calc-qty" data-qty-for="OPT_SOUND" hidden>
+                  <label class="calc-sublabel" for="calc-qty-OPT_SOUND">Площадь стен под шумоизоляцию, м²</label>
+                  <input
+                    class="calc-input calc-input--qty"
+                    type="text"
+                    id="calc-qty-OPT_SOUND"
+                    inputmode="decimal"
+                    autocomplete="off"
+                    data-qty-id="OPT_SOUND"
+                    aria-describedby="calc-qty-hint-OPT_SOUND">
+                  <p class="calc-hint" id="calc-qty-hint-OPT_SOUND">
+                    Допустимо от 0,01 до 2000 м².
+                  </p>
+                </div>
+                <p class="calc-error" id="calc-error-OPT_SOUND" role="alert" hidden></p>
+              </div>
+
+              <div class="calc-option" data-entry-id="OPT_SOCKET">
+                <label class="calc-option-head" for="calc-extra-OPT_SOCKET">
+                  <input
+                    class="calc-check"
+                    type="checkbox"
+                    id="calc-extra-OPT_SOCKET"
+                    value="OPT_SOCKET"
+                    data-extra-toggle="OPT_SOCKET">
+                  <span class="calc-option-name">Дополнительная электрическая точка</span>
+                  <span class="calc-option-price">900,00 ₽ / шт.</span>
+                </label>
+                <p class="calc-option-desc">Точки сверх базового состава пакета; материалы отдельно</p>
+                <div class="calc-qty" data-qty-for="OPT_SOCKET" hidden>
+                  <label class="calc-sublabel" for="calc-qty-OPT_SOCKET">Количество точек, шт.</label>
+                  <input
+                    class="calc-input calc-input--qty"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    id="calc-qty-OPT_SOCKET"
+                    data-qty-id="OPT_SOCKET"
+                    aria-describedby="calc-qty-hint-OPT_SOCKET">
+                  <p class="calc-hint" id="calc-qty-hint-OPT_SOCKET">
+                    Целое число от 1 до 200.
+                  </p>
+                </div>
+                <p class="calc-error" id="calc-error-OPT_SOCKET" role="alert" hidden></p>
+              </div>
+
+              <div class="calc-option" data-entry-id="OPT_DOOR">
+                <label class="calc-option-head" for="calc-extra-OPT_DOOR">
+                  <input
+                    class="calc-check"
+                    type="checkbox"
+                    id="calc-extra-OPT_DOOR"
+                    value="OPT_DOOR"
+                    data-extra-toggle="OPT_DOOR">
+                  <span class="calc-option-name">Установка межкомнатной двери</span>
+                  <span class="calc-option-price">4&nbsp;500,00 ₽ / шт.</span>
+                </label>
+                <p class="calc-option-desc">За одну дверь; дверной блок приобретается отдельно</p>
+                <div class="calc-qty" data-qty-for="OPT_DOOR" hidden>
+                  <label class="calc-sublabel" for="calc-qty-OPT_DOOR">Количество дверей, шт.</label>
+                  <input
+                    class="calc-input calc-input--qty"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    id="calc-qty-OPT_DOOR"
+                    data-qty-id="OPT_DOOR"
+                    aria-describedby="calc-qty-hint-OPT_DOOR">
+                  <p class="calc-hint" id="calc-qty-hint-OPT_DOOR">
+                    Целое число от 1 до 50.
+                  </p>
+                </div>
+                <p class="calc-error" id="calc-error-OPT_DOOR" role="alert" hidden></p>
+              </div>
+
+              <div class="calc-option" data-entry-id="OPT_WASTE">
+                <label class="calc-option-head" for="calc-extra-OPT_WASTE">
+                  <input
+                    class="calc-check"
+                    type="checkbox"
+                    id="calc-extra-OPT_WASTE"
+                    value="OPT_WASTE"
+                    data-extra-toggle="OPT_WASTE">
+                  <span class="calc-option-name">Вывоз строительного мусора</span>
+                  <span class="calc-option-price">8&nbsp;000,00 ₽ / заказ</span>
+                </label>
+                <p class="calc-option-desc">Фиксированная доплата один раз за заказ</p>
+                <p class="calc-error" id="calc-error-OPT_WASTE" role="alert" hidden></p>
+              </div>
+
+              <div class="calc-option" data-entry-id="OPT_CLEAN">
+                <label class="calc-option-head" for="calc-extra-OPT_CLEAN">
+                  <input
+                    class="calc-check"
+                    type="checkbox"
+                    id="calc-extra-OPT_CLEAN"
+                    value="OPT_CLEAN"
+                    data-extra-toggle="OPT_CLEAN">
+                  <span class="calc-option-name">Послеремонтная уборка</span>
+                  <span class="calc-option-price">180,00 ₽ / м²</span>
+                </label>
+                <p class="calc-option-desc">Рассчитывается по указанной площади отделки</p>
+                <p class="calc-qty-static" id="calc-qty-hint-OPT_CLEAN">
+                  Количество равно площади отделки.
+                </p>
+                <p class="calc-error" id="calc-error-OPT_CLEAN" role="alert" hidden></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <p class="calc-error calc-error--form" id="calc-form-error" role="alert" tabindex="-1" hidden></p>
+
+          <div class="calc-actions">
+            <button type="submit" class="btn btn-primary" data-calc-submit>Показать расчёт</button>
+            <button type="button" class="btn btn-secondary" data-calc-reset>Очистить</button>
+          </div>
+
+          <p class="calc-status" role="status" aria-live="polite" data-calc-status></p>
+        </form>
+
+        <!-- Результат -->
+        <div class="calc-result" id="calc-result" role="region" aria-labelledby="calc-result-title" tabindex="-1" hidden data-calc-result>
+          <h3 class="calc-result-title" id="calc-result-title">Предварительная стоимость работ</h3>
+
+          <p class="calc-total">
+            <span class="calc-total-label">Итого</span>
+            <span class="calc-total-value" data-calc-total></span>
+          </p>
+
+          <table class="calc-table">
+            <caption class="visually-hidden">Состав расчёта: работа, количество, единица, цена, сумма</caption>
+            <thead>
+              <tr>
+                <th scope="col">Работа</th>
+                <th scope="col">Количество</th>
+                <th scope="col">Единица</th>
+                <th scope="col">Цена за единицу</th>
+                <th scope="col">Сумма</th>
+              </tr>
+            </thead>
+            <tbody data-calc-lines></tbody>
+          </table>
+
+          <p class="calc-disclaimer">
+            Учебный расчёт по демонстрационному прайсу.
+            Учитывает только выбранные работы, без материалов.
+            Не является технической сметой.
+          </p>
+
+          <div class="calc-form-action" data-calc-form-action hidden>
+            <a class="btn btn-primary" data-calc-form-link target="_blank" rel="noopener noreferrer">Обсудить расчёт</a>
+            <p class="calc-form-note">
+              Учебный проект. Откроется Яндекс Форма в новой вкладке.
+              Используйте только вымышленные данные.
+            </p>
+          </div>
+
+          <p class="calc-error calc-form-link-error" role="alert" data-calc-form-link-error hidden></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-note">
+    <p>Учебный проект. Интерьер — AI-визуализация</p>
+  </footer>
+
+  <script type="module" src="js/calculator-ui.mjs"></script>
+</body>
+</html>

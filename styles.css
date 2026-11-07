@@ -1,0 +1,847 @@
+/* РемонтЛаб — первый экран (учебный прототип)
+   Светлая минеральная поверхность, графитовая типографика, чернильная кнопка. */
+
+:root {
+  --bg: #ECEEED;
+  --text: #24282b;
+  --accent: #294c68;
+  --muted: #5f666c;
+  --lead: #3a4147;
+  --hairline: #dbdfe0;
+  --serif: Georgia, "Cambria", "PT Serif", "Times New Roman", serif;
+  --sans: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --pad: clamp(20px, 4vw, 56px);
+  /* Декоративная минеральная текстура: интенсивность — в одном месте. */
+  --texture-image: url("assets/mineral-texture.jpg");
+  --texture-opacity: 0.4;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  /* Базовая светло-серая поверхность #ECEEED остаётся видимой,
+     в том числе если изображение текстуры не загрузилось. */
+  background-color: #ECEEED;
+  position: relative;
+  z-index: 0;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Обёртка «шапка + первый экран» — текстурная поверхность живёт на ней,
+   поэтому при удлинении страницы новым разделом она не растягивается
+   и первый экран сохраняет вид. */
+main {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.stage {
+  position: relative;
+  z-index: 0;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Декоративный слой: одно фоновое изображение без повтора,
+   проходит непрерывно под шапкой и первым экраном.
+   Слой нижний — он не перекрывает содержимое и не перехватывает клики. */
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--texture-image);
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  opacity: var(--texture-opacity);
+  pointer-events: none;
+}
+
+/* ---------- Шапка ---------- */
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding: clamp(18px, 1.7vw, 26px) var(--pad);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.logo {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(19px, 1.5vw, 22px);
+  letter-spacing: 0.01em;
+}
+
+/* Второстепенная текстовая кнопка в шапке: без заливной плашки. */
+.header-link {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  background: none;
+  border: none;
+  padding: 6px 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: #a9b0b3;
+}
+
+.header-link:hover {
+  color: var(--text);
+  text-decoration-color: currentColor;
+}
+
+.header-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Первая экранная композиция ---------- */
+
+.hero {
+  flex: 1 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 40px);
+  align-items: center;
+  padding: clamp(36px, 3.6vw, 56px) var(--pad) clamp(32px, 3vw, 48px);
+}
+
+.hero-text {
+  max-width: 34rem;
+}
+
+.eyebrow {
+  margin: 0 0 clamp(16px, 1.6vw, 24px);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.hero-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(32px, 4.4vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  overflow-wrap: break-word;
+  hyphens: none;
+  text-wrap: pretty;
+}
+
+/* Ритм строк из четырёх строк задаётся только на широком экране (см. ниже);
+   на узких ширинах переносы естественные. */
+.lead {
+  margin: clamp(20px, 2vw, 30px) 0 0;
+  max-width: 30em;
+  font-size: clamp(16px, 1.1vw, 18px);
+  line-height: 1.6;
+  color: var(--lead);
+}
+
+/* ---------- Действия ---------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: clamp(26px, 2.6vw, 40px);
+}
+
+.btn {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.2;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 16px 28px;
+  background: var(--accent);
+  color: #ffffff;
+  border: 1px solid var(--accent);
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background: #22405a;
+  border-color: #22405a;
+}
+
+.btn-secondary {
+  padding: 16px 2px;
+  background: none;
+  color: var(--text);
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: #a9b0b3;
+}
+
+.btn-secondary:hover {
+  text-decoration-color: currentColor;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Фотография ---------- */
+
+.hero-media {
+  margin: 0;
+  justify-self: end;
+  max-width: 100%;
+}
+
+.hero-media img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  border-radius: 0;
+}
+
+.hero-media figcaption {
+  margin-top: 14px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* ---------- Учебный статус ---------- */
+
+.site-note {
+  padding: 18px var(--pad) 34px;
+  border-top: 1px solid var(--hairline);
+}
+
+.site-note p {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+/* ---------- Раздел «Интерьеры» ---------- */
+
+/* Ровный базовый фон #ECEEED без повторного наложения текстуры
+   и без декоративного разделителя. */
+.interiors {
+  padding: clamp(56px, 6.4vw, 112px) var(--pad) clamp(48px, 5vw, 88px);
+}
+
+.interiors-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(28px, 3.1vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+.interiors-intro {
+  margin: clamp(14px, 1.4vw, 20px) 0 0;
+  max-width: 34em;
+  font-size: clamp(16px, 1.1vw, 18px);
+  line-height: 1.6;
+  color: var(--lead);
+}
+
+.interiors-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(40px, 4.5vw, 48px);
+  margin-top: clamp(32px, 3.6vw, 52px);
+}
+
+.interior {
+  margin: 0;
+  min-width: 0;
+}
+
+.interior img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}
+
+.interior figcaption {
+  margin-top: clamp(14px, 1.4vw, 18px);
+}
+
+.interior-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.interior-title {
+  margin: clamp(8px, 0.8vw, 12px) 0 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(24px, 2vw, 30px);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+
+.interior-text {
+  margin: 10px 0 0;
+  max-width: 28em;
+  font-size: clamp(15px, 1vw, 17px);
+  line-height: 1.6;
+  color: var(--lead);
+}
+
+.interiors-note {
+  margin: clamp(32px, 3.6vw, 56px) 0 0;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+/* ---------- Планшет ---------- */
+
+@media (min-width: 768px) {
+  .hero-text {
+    max-width: 38rem;
+  }
+}
+
+/* ---------- Десктоп: текст слева, фотография справа ---------- */
+
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, min(44%, 550px));
+    column-gap: clamp(32px, 3.4vw, 48px);
+  }
+
+  .hero-text {
+    max-width: none;
+  }
+
+  .hero-title .line {
+    /* Заданный ритм строк — только для широкого экрана. */
+    display: block;
+  }
+
+  /* Асимметричная сетка раздела: кухня шире, спальня уже и смещена вниз. */
+  .interiors-grid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    column-gap: clamp(40px, 3.4vw, 48px);
+  }
+
+  .interior--bedroom {
+    margin-top: clamp(80px, 6.4vw, 100px);
+  }
+}
+
+/* ---------- Раздел «Расчёт» (учебный веб-калькулятор) ---------- */
+
+/* Ровный светло-серый фон страницы, тонкий разделитель сверху.
+   Без текстур, градиентов, теней и крупных скруглений. */
+.calculator {
+  padding: clamp(56px, 6.4vw, 112px) var(--pad) clamp(48px, 5vw, 88px);
+  border-top: 1px solid var(--hairline);
+}
+
+.calc-sheet {
+  max-width: 60rem;
+  margin: 0 auto;
+  min-width: 0;
+}
+
+.calc-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(28px, 3.1vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+.calc-title-line {
+  display: block;
+}
+
+.calc-intro {
+  margin: clamp(14px, 1.4vw, 20px) 0 0;
+  max-width: 36em;
+  font-size: clamp(16px, 1.1vw, 18px);
+  line-height: 1.6;
+  color: var(--lead);
+}
+
+.calc-warning {
+  margin: clamp(24px, 2.4vw, 32px) 0 0;
+  max-width: 40em;
+  padding-left: 16px;
+  border-left: 2px solid var(--accent);
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--lead);
+}
+
+.calc-source {
+  margin: 14px 0 0;
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+/* --- Рабочий лист --- */
+
+.calc-form {
+  margin-top: clamp(28px, 3vw, 40px);
+}
+
+.calc-field {
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-width: 0;
+}
+
+.calc-field + .calc-field {
+  margin-top: clamp(28px, 3vw, 36px);
+}
+
+.calc-label,
+.calc-legend,
+.calc-sublabel {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.calc-legend {
+  padding: 0;
+  margin-bottom: 4px;
+}
+
+.calc-input {
+  display: block;
+  width: 100%;
+  max-width: 18rem;
+  margin-top: 10px;
+  padding: 11px 12px;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--text);
+  background: #ffffff;
+  border: 1px solid #c6cccf;
+  border-radius: 2px;
+}
+
+.calc-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+.calc-input[aria-invalid="true"] {
+  border-color: #9d3f3f;
+}
+
+.calc-hint {
+  margin: 10px 0 0;
+  max-width: 44em;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.calc-hint-range {
+  display: block;
+  margin-top: 4px;
+}
+
+.calc-error {
+  margin: 8px 0 0;
+  max-width: 44em;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #9d3f3f;
+}
+
+.calc-error--form {
+  margin-top: clamp(24px, 2.4vw, 32px);
+  font-weight: 600;
+}
+
+/* --- Список позиций: тонкие разделители, без карточек --- */
+
+.calc-options {
+  margin-top: 14px;
+  border-top: 1px solid var(--hairline);
+}
+
+.calc-option {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline);
+  min-width: 0;
+}
+
+.calc-option-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 16px;
+  cursor: pointer;
+}
+
+.calc-option-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 15.5px;
+  font-weight: 600;
+  overflow-wrap: break-word;
+}
+
+.calc-option-price {
+  flex: 0 0 auto;
+  font-size: 14.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.calc-option-desc {
+  margin: 6px 0 0;
+  padding-left: 28px;
+  max-width: 46em;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--lead);
+  overflow-wrap: break-word;
+}
+
+.calc-radio,
+.calc-check {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.calc-qty {
+  margin-top: 14px;
+  padding-left: 28px;
+}
+
+.calc-sublabel {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.calc-qty .calc-input {
+  margin-top: 8px;
+  max-width: 12rem;
+}
+
+.calc-qty-static {
+  margin: 8px 0 0;
+  padding-left: 28px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.calc-note {
+  margin: clamp(28px, 3vw, 36px) 0 0;
+  max-width: 46em;
+  padding-top: clamp(20px, 2vw, 24px);
+  border-top: 1px solid var(--hairline);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--lead);
+}
+
+.calc-note + .calc-field {
+  margin-top: clamp(28px, 3vw, 36px);
+}
+
+.calc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: clamp(26px, 2.6vw, 36px);
+  padding-top: clamp(20px, 2vw, 24px);
+  border-top: 1px solid var(--hairline);
+}
+
+.calc-status:not(:empty) {
+  margin-top: 16px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* --- Результат: спокойная подложка без тени --- */
+
+.calc-result {
+  margin-top: clamp(28px, 3vw, 40px);
+  padding: clamp(20px, 2.4vw, 28px);
+  background: #e3e6e7;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  min-width: 0;
+}
+
+.calc-result:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.calc-result-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.2;
+  overflow-wrap: break-word;
+}
+
+.calc-total {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 24px;
+  margin: clamp(16px, 1.6vw, 22px) 0 0;
+  padding: 14px 0;
+  border-top: 1px solid #cbd0d2;
+  border-bottom: 1px solid #cbd0d2;
+}
+
+.calc-total-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.calc-total-value {
+  font-family: var(--serif);
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.calc-table {
+  width: 100%;
+  margin-top: clamp(16px, 1.8vw, 24px);
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.calc-table th,
+.calc-table td {
+  padding: 11px 12px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #cbd0d2;
+  font-size: 14.5px;
+  line-height: 1.45;
+  overflow-wrap: break-word;
+}
+
+.calc-table th {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.calc-table th:first-child,
+.calc-table td:first-child {
+  padding-left: 0;
+}
+
+.calc-table th:last-child,
+.calc-table td:last-child {
+  padding-right: 0;
+  text-align: right;
+}
+
+.calc-table th:nth-child(2),
+.calc-table td:nth-child(2),
+.calc-table th:nth-child(4),
+.calc-table td:nth-child(4) {
+  text-align: right;
+}
+
+.calc-table td:nth-child(2),
+.calc-table td:nth-child(4) {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.calc-disclaimer {
+  margin: clamp(16px, 1.8vw, 22px) 0 0;
+  max-width: 46em;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* --- Действие: ссылка на Яндекс Форму (только для актуального результата) --- */
+
+.calc-form-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: clamp(16px, 1.8vw, 22px);
+}
+
+.calc-form-action[hidden] {
+  display: none;
+}
+
+.calc-form-note {
+  margin: 0;
+  max-width: 34em;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.calc-form-link-error {
+  margin-top: 12px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Телефон: таблица превращается в строки с явными подписями.
+       Заголовки столбцов остаются в дереве доступности (не display:none),
+       поэтому горизонтальная прокрутка всей страницы не нужна. --- */
+
+@media (max-width: 720px) {
+  .calc-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .calc-table,
+  .calc-table tbody,
+  .calc-table tr,
+  .calc-table td {
+    display: block;
+    width: auto;
+  }
+
+  .calc-table tr {
+    padding: 14px 0;
+    border-bottom: 1px solid #cbd0d2;
+  }
+
+  .calc-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .calc-table td {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4px 16px;
+    padding: 4px 0;
+    border-bottom: none;
+    text-align: left !important;
+    white-space: normal;
+  }
+
+  .calc-table td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .calc-table td:first-child {
+    padding-bottom: 10px;
+    font-weight: 600;
+  }
+}
+
+@media (max-width: 520px) {
+  .calc-option-price {
+    white-space: normal;
+  }
+
+  .calc-option-desc,
+  .calc-qty,
+  .calc-qty-static,
+  .calc-option > .calc-error {
+    padding-left: 0;
+  }
+}
